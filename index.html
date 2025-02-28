@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="shaders,textures ,optifines only ">
+    <title>MCPE Textures, Shaders ,optifines</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: black;
+            color: white;
+            text-align: center;
+            min-height: 100vh;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        html {
+            scroll-behavior: smooth; /* Smooth scrolling for better UX */
+        }
+
+        /* Heading Styling */
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            color: red;
+            text-shadow: 0 0 20px rgba(255,0 , 0, 0.8), 0 0 40px rgba(0, 255, 255, 0.6);
+            margin-bottom: 20px;
+            text-decoration: underline;
+            text-decoration-color: black;
+            white-space: nowrap;
+        }
+
+        p {
+            font-size: 1.4rem;
+            color: red;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+        }
+    p1{
+        color:Red;
+    }
+    a{
+        color:red;
+        font-size:1rem;
+    }
+
+        /* Grid Container */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Grid Item Styling */
+        .grid-item {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(255, 0, 0, 0.6);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 247, 255, 0.6);
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 30px rgba(0, 255, 255, 0.8), 0 10px 40px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Grid Item Heading */
+        .grid-item h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: Cyan; /* Neon Green */
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+            margin-bottom: 15px;
+        }
+
+        /* Link Styling */
+        .grid-item a {
+            font-size: 1.2rem;
+            color: #fff;
+            background: linear-gradient(90deg, #00f7ff, #00ff00); /* Neon Blue to Green */
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s, box-shadow 0.3s;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .grid-item a:hover {
+            background: linear-gradient(90deg, #00ff00, #00f7ff);
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.6), 0 6px 25px rgba(0, 255, 255, 0.5);
+        }
+
+        /* Canvas for Spark Particles */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 1000px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            p {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Canvas for Spark Particles -->
+    <canvas id="sparkCanvas"></canvas>
+
+    <!-- Header -->
+    <h1>MCPE PROJECTS</h1>
+
+    <!-- Grid Container -->
+    <div class="grid-container">
+        <div class="grid-item">
+            <h2>Hyper Shader</h2>
+            <a href="shader.html">Visit Paget</a>
+        </div>
+
+    <!-- Spark Particles Script -->
+    <script>
+        const canvas = document.getElementById('sparkCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const sparks = [];
+        const numberOfSparks = 150;
+
+        class Spark {
+            constructor(x, y, size, speedX, speedY) {
+                this.x = x;
+                this.y = y;
+                this.size = size;
+                this.speedX = speedX;
+                this.speedY = speedY;
+                this.opacity = 1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255,0, 0, ${this.opacity})`;
+                ctx.fill();
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.opacity -= 0.02;
+                if (this.opacity <= 0) {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 3 + 1;
+                    this.speedX = Math.random() * 2 - 1;
+                    this.speedY = Math.random() * 2 - 1;
+                    this.opacity = 1;
+                }
+            }
+        }
+
+        function createSparks() {
+            for (let i = 0; i < numberOfSparks; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const size = Math.random() * 3 + 1;
+                const speedX = Math.random() * 2 - 1;
+                const speedY = Math.random() * 2 - 1;
+                sparks.push(new Spark(x, y, size, speedX, speedY));
+            }
+        }
+
+        function animateSparks() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            sparks.forEach(spark => {
+                spark.update();
+                spark.draw();
+            });
+            requestAnimationFrame(animateSparks);
+        }
+
+        createSparks();
+        animateSparks();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            sparks.length = 0;
+            createSparks();
+        });
+    </script>
+</body>
+</html>
